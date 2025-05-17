@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>かたかたの秘密基地 Ver.2.2</title>
+    <style>
+        /* CSS全体がここに挿入されます (Part 2/4) */
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+:root {
+    --theme-bg-primary: #f0f8ff;
+    --theme-bg-secondary: #fff0f5;
+    --theme-border-retro: #ffd700;
+    --theme-accent-cute: #ffb6c1;
+    --theme-text-dark: #333;
+    --theme-text-light: #fff;
+    --theme-header-bg: #dda0dd;
+    --theme-nav-bg: #ff7f50;
+    --theme-nav-hover: #ff4500;
+    --theme-section-bg: #fffacd;
+    --theme-section-border: #f0e68c;
+    --theme-sidebar-bg: #e6e6fa;
+    --theme-sidebar-widget-bg: #fff0f5;
+    --theme-dot-pattern-color: rgba(208, 232, 255, 0.4);
+    --dot-pattern-svg: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d0e8ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H0L6 0h-1z'/%3E%3C/g%3E%3C/svg%3E");
+    --cursor-cute: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><polygon points="16,2 20,12 31,12 22,19 25,30 16,23 7,30 10,19 1,12 12,12" fill="pink" stroke="hotpink" stroke-width="2"/></svg>') 8 2, auto;
+}
+body, a, button, input[type="submit"], input[type="button"], .collapsible {
+    cursor: var(--cursor-cute);
+}
+body {
+    font-family: 'DotGothic16', sans-serif;
+    background-color: var(--theme-bg-primary);
+    background-image: var(--dot-pattern-svg);
+    color: var(--theme-text-dark);
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+.page-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeIn 0.5s 0.5s forwards;
+}
+@keyframes fadeIn { 100% { opacity: 1; } }
+#loader-wrapper {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: var(--theme-bg-primary);
+    z-index: 10000;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    font-family: 'Press Start 2P', cursive;
+}
+#loader {
+    width: 64px; height: 64px;
+    border: 4px solid transparent;
+    border-top-color: var(--theme-accent-cute);
+    border-right-color: var(--theme-accent-cute);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+#loader-text {
+    color: var(--theme-header-bg);
+    font-size: 1em;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loaded #loader-wrapper { animation: fadeOut 0.5s forwards; }
+@keyframes fadeOut { 100% { opacity: 0; visibility: hidden; } }
+#mouse-stalker {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><polygon points="12,2 15,8 22,8 16,13 18,21 12,17 6,21 8,13 2,8 9,8" fill="pink" stroke="hotpink" stroke-width="1.5"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.05s ease-out;
+    display: none;
+}
+#stalker-toggle {
+    display: block;
+    margin: 0 auto 10px auto;
+    font-size: 0.9em;
+    background: #fff;
+    border: 1.5px solid #ffb6c1;
+    border-radius: 4px;
+    padding: 4px 12px;
+    color: #d23b93;
+    transition: background 0.2s;
+}
+#stalker-toggle:hover { background: #ffe6f3; }
+.sidebar {
+    width: 240px;
+    background-color: var(--theme-sidebar-bg);
+    padding: 20px;
+    border-right: 4px groove var(--theme-header-bg);
+    box-shadow: 3px 0 6px rgba(0,0,0,0.15);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+.sidebar h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--theme-header-bg);
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px dashed var(--theme-accent-cute);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+.sidebar-icon {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+.sidebar-widget {
+    margin-bottom: 25px;
+    padding: 12px;
+    background-color: var(--theme-sidebar-widget-bg);
+    border: 2px solid var(--theme-accent-cute);
+    border-radius: 6px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+.collapsible {
+    width: 100%;
+    background: #fff0f5;
+    color: #d23b93;
+    border: none;
+    outline: none;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: 'DotGothic16', sans-serif;
+    margin-bottom: 5px;
+}
+.collapsible[aria-expanded="true"] {
+    background: #ffe4ef;
+    font-weight: bold;
+}
+.theme-selector button {
+    font-family: 'DotGothic16', sans-serif;
+    background: #fff;
+    border: 2px solid var(--theme-accent-cute);
+    padding: 5px 8px;
+    margin: 3px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+.theme-selector button:hover { background-color: var(--theme-accent-cute); color: var(--theme-text-light);}
+.theme-selector button.active { background-color: var(--theme-header-bg); color: var(--theme-text-light); border-color: var(--theme-header-bg);}
+#visitor-counter-section-sidebar { text-align: center; }
+#counter-sidebar {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.6em;
+    color: var(--theme-nav-hover);
+    background-color: var(--theme-text-light);
+    padding: 8px 10px;
+    border: 2px solid var(--theme-nav-bg);
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 5px;
+    min-width: 60px;
+    animation: pulseCounter 2s infinite alternate;
+}
+@keyframes pulseCounter {
+    from { transform: scale(1); box-shadow: 0 0 5px var(--theme-nav-bg);}
+    to { transform: scale(1.05); box-shadow: 0 0 15px var(--theme-nav-hover);}
+}
+#kiri-announce-sidebar {
+    font-weight: bold;
+    color: #db7093;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+.hint-box p, .secret-word-box p { color: #6a5acd; line-height: 1.5;}
+.hint-box strong, .secret-word-box strong { color: #ff1493;}
+#secret-word {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--theme-nav-hover);
+    background-color: #fff8dc;
+    padding: 5px 8px;
+    border: 1px dashed var(--theme-accent-cute);
+    display: inline-block;
+    margin-top: 5px;
+}
+.main-content {
+    flex-grow: 1;
+    padding: 25px;
+    max-width: calc(100% - 280px);
+}
+.container {
+    background-color: var(--theme-bg-secondary);
+    border: 5px outset var(--theme-border-retro);
+    box-shadow: 8px 8px 0px var(--theme-accent-cute);
+    padding: 25px;
+    border-radius: 10px;
+}
+header {
+    background: linear-gradient(45deg, var(--theme-header-bg), #f5e6fa);
+    padding: 25px;
+    text-align: center;
+    border-bottom: 4px ridge var(--theme-text-light);
+    margin-bottom: 25px;
+    border-radius: 8px 8px 0 0;
+}
+header h1 {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    font-size: 2.8em;
+    color: var(--theme-text-light);
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.2), 0 0 10px gold;
+    transition: transform 0.2s, text-shadow 0.2s;
+    letter-spacing: 2px;
+}
+header h1::before, header h1::after {
+    content: '✦';
+    color: gold;
+    margin: 0 18px;
+    animation: sparkle 1.5s infinite;
+}
+@keyframes sparkle { 0%, 100% {opacity:1; transform:scale(1);} 50%{opacity:.5;transform:scale(1.3);} }
+header h1:hover {
+    transform: scale(1.03) rotate(-1deg);
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.3), 0 0 15px yellow;
+}
+nav { text-align: center; margin-bottom: 30px;}
+nav a {
+    font-family: 'Press Start 2P', cursive;
+    text-decoration: none;
+    color: var(--theme-text-light);
+    background-color: var(--theme-nav-bg);
+    padding: 12px 20px;
+    margin: 0 10px;
+    border-radius: 8px;
+    border: 2px solid #e75422;
+    border-bottom-width: 5px;
+    font-weight: bold;
+    transition: all 0.15s;
+    display: inline-block;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+    font-size: 0.9em;
+}
+nav a:hover {
+    background-color: var(--theme-nav-hover);
+    border-color: #e75422;
+    transform: scale(1.06);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+nav a:active {
+    transform: scale(0.97);
+    border-bottom-width: 2px;
+    box-shadow: none;
+}
+nav a .nav-icon { margin-right: 10px; font-size: 1em;}
+section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: var(--theme-section-bg);
+    border: 3px dotted var(--theme-section-border);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+section h2 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.8em;
+    color: var(--theme-accent-cute);
+    border-bottom: 3px solid var(--theme-header-bg);
+    padding-bottom: 10px;
+    text-align: center;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 0 var(--theme-text-light);
+}
+section h2 .section-icon { margin: 0 12px; color: var(--theme-header-bg); font-size: 1.1em;}
+.game-card {
+    background-color: #e0ffff;
+    border: 3px solid #afeeee;
+    border-radius: 12px;
+    padding: 20px;
+    width: calc(33.333% - 40px);
+    box-sizing: border-box;
+    text-align: center;
+    box-shadow: 5px 5px 0px #add8e6;
+    position: relative;
+    transition: transform 0.22s cubic-bezier(0.68,-0.55,0.27,1.55), 
+                box-shadow 0.22s cubic-bezier(0.68,-0.55,0.27,1.55), 
+                border-color 0.22s;
+}
+.game-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 24px #9cc2d0;
+    border-color: var(--theme-nav-bg);
+    z-index: 2;
+}
+.game-card h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: #4682b4;
+    margin-top: 0;
+    font-size: 1.1em;
+}
+.game-card img {
+    width: 100px; height: 100px; background-color: #d0d0d0;
+    border: 3px dashed #aaa; margin-bottom: 12px; display: inline-block;
+    line-height: 100px; color: #555; font-size: 0.9em; border-radius: 8px;
+    image-rendering: pixelated;
+}
+.game-card p { font-size: 0.9em; color: #556b2f; min-height: 55px;}
+.play-button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8em; display: inline-block; padding: 12px 22px;
+    background-color: #32cd32; color: white; text-decoration: none;
+    border-radius: 8px; font-weight: bold; border-bottom: 5px solid #228b22;
+    transition: all 0.1s; text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+}
+.play-button:hover { background-color: #2e8b57; transform: translateY(-3px) scale(1.05); box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
+.play-button:active { transform: translateY(1px); border-bottom-width: 2px; box-shadow: none;}
+.game-tooltip {
+    display: none; position: absolute; bottom: 105%; left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0,0,0,0.75); color: white;
+    padding: 8px 12px; border-radius: 5px; font-size: 0.8em; white-space: nowrap;
+    z-index: 10;
+}
+.game-card:hover .game-tooltip { display: block; animation: tooltipFadeIn 0.3s;}
+@keyframes tooltipFadeIn { from {opacity:0; transform: translateX(-50%) translateY(10px);} to {opacity:1; transform: translateX(-50%) translateY(0);}}
+#community-section { background-color: #f5f5dc;}
+#bbs-form { background-color: #fff8e7; padding: 20px; border-radius: 10px; border: 2px solid #ffe4b5; margin-bottom:20px;}
+#bbs-form label { display: block; margin-bottom: 8px; color: #8b4513; font-weight: bold; font-size:0.95em;}
+#bbs-form input[type="text"], #bbs-form textarea {
+    width: calc(100% - 28px); padding: 12px; margin-bottom: 15px;
+    border: 2px inset #deb887; border-radius: 6px;
+    font-family: 'MS PGothic', 'Osaka', sans-serif; background-color: #fffdf5;
+    font-size: 1em;
+}
+#bbs-form button {
+    font-family: 'Press Start 2P', cursive; font-size: 0.9em;
+    background-color: #8fbc8f; color: white; padding: 14px 25px;
+    border: none; border-radius: 8px; font-weight: bold;
+    border-bottom: 5px solid #556b2f; transition: all 0.1s;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+}
+#bbs-form button:hover { background-color: #6b8e23; transform: translateY(-3px); box-shadow: 0 3px 6px rgba(0,0,0,0.2);}
+#bbs-form button:active { transform: translateY(1px); border-bottom-width: 2px; box-shadow:none;}
+#bbs-posts { margin-top: 30px; border-top: 4px groove var(--theme-accent-cute); padding-top: 25px;}
+.post {
+    background-color: #fffef0; border: 2px solid #f5e7ce;
+    padding: 15px; margin-bottom: 15px; border-radius: 8px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.07);
+    transition: background-color 0.3s;
+}
+.post.kiri-post { background-color: #fffacd; border-color: gold; box-shadow: 0 0 10px gold;}
+.post.secret-word-post { background-color: #e6e6fa; border-color: var(--theme-header-bg);}
+.post .name { font-weight: bold; color: #a0522d; font-family: 'DotGothic16', sans-serif;}
+.post .date { font-size: 0.8em; color: #888; margin-left: 10px;}
+.post .message { margin-top: 8px; white-space: pre-wrap; color: #4a4a4a; line-height: 1.65;}
+footer {
+    text-align: center; margin-top: 35px; padding: 20px;
+    background-color: #dcdcdc; color: #444; font-size: 0.9em;
+    border-top: 3px double #b0b0b0;
+    border-radius: 0 0 8px 8px;
+}
+#copyright-area { cursor: default;}
+#copyright-name { cursor: var(--cursor-cute); padding: 2px 0; font-weight:bold; color: var(--theme-nav-bg);}
+#footer-secret-message { display:block; margin-top:10px; font-size:0.8em; color:#777; height:1.2em;}
+#sound-control, #scroll-to-top-btn {
+    position: fixed;
+    bottom: 15px;
+    width: 40px; height: 40px;
+    background-color: rgba(255,255,255,0.8);
+    border: 2px solid var(--theme-accent-cute);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 120;
+    transition: background-color 0.18s, border-style 0.18s;
+}
+#sound-control { right: 15px;}
+#scroll-to-top-btn { 
+    right: 65px; 
+    display: none;
+    font-size: 1.5em;
+    color: #d23b93;
+}
+#sound-control:hover, #scroll-to-top-btn:hover { 
+    background-color: var(--theme-accent-cute);
+}
+#sound-icon, #top-icon { font-size: 20px; color: var(--theme-header-bg);}
+#sound-control.sound-off {
+    border-style: dashed;
+}
+#sound-control.sound-off #sound-icon {
+    opacity: 0.6;
+}
+.confetti-piece {
+    position: absolute; width: 12px; height: 12px;
+    background: linear-gradient(135deg, #ffd700 50%, #ffb6c1 50%);
+    border-radius: 50%; opacity: 0.85;
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+.hover-balloon {
+    padding: 8px 18px;
+    background: #ffe9fa;
+    border: 2px solid #ffb6c1;
+    color: #d23b93;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(255, 182, 193, 0.25);
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1.05em;
+    pointer-events: none;
+    animation: balloonIn .22s cubic-bezier(.68,-0.55,.27,1.55);
+    z-index: 10001;
+    position: fixed;
+    white-space: nowrap;
+}
+@keyframes balloonIn { 
+    from{ opacity:0; transform:scale(0.9) translateY(5px); }
+    to{opacity:1; transform:scale(1) translateY(0);} 
+}
+@media (max-width: 1024px) {
+    .page-wrapper { flex-direction: column;}
+    .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 4px groove var(--theme-header-bg); margin-bottom: 20px;}
+    .main-content { max-width: 100%; padding: 20px;}
+    .game-card { width: calc(50% - 30px); }
+}
+@media (max-width: 640px) {
+    header h1 { font-size: 2em;}
+    header h1::before, header h1::after { margin: 0 10px;}
+    nav a { display: block; margin: 10px 0; padding: 12px 15px; font-size: 0.8em;}
+    .game-card { width: calc(100% - 20px); }
+    section h2 { font-size: 1.5em;}
+    #bbs-form input[type="text"], #bbs-form textarea { padding: 10px;}
+    #bbs-form button { padding: 12px 20px; font-size:0.8em;}
+    .sidebar { padding: 15px;}
+    .main-content { padding: 15px;}
+    .container { padding: 15px;}
+    #scroll-to-top-btn { right: 15px; bottom: 65px; }
+    #sound-control { right: 15px; bottom: 15px; }
+}
+    </style>
+</head>
+<body>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div id="loader-text">ヒミツキチヲ ケンセツチュウ...</div>
+    </div>
+    <div id="mouse-stalker"></div>
+    <audio id="ambient-sound" loop src="dummy-sound.mp3"></audio> <!-- 実際の音声ファイルに置き換えてください -->
+
+    <div class="page-wrapper">
+        <aside class="sidebar">
+            <button id="stalker-toggle" aria-pressed="false" aria-label="マウスストーカー切り替え">マウスストーカー ON</button>
+            <div class="sidebar-widget" id="visitor-counter-section-sidebar">
+                <h3><span class="sidebar-icon" aria-hidden="true">📊</span>来訪者さま</h3>
+                <p>アナタは<br><span id="counter-sidebar">0</span><br>人目のお客様！</p>
+                <p id="kiri-announce-sidebar"></p>
+            </div>
+            <div class="sidebar-widget secret-word-box">
+                <h3><span class="sidebar-icon" aria-hidden="true">🔑</span>今日の合言葉</h3>
+                <p>掲示板で使うとイイコトあるかも？<br><strong id="secret-word">ヒミツ</strong></p>
+            </div>
+            <div class="sidebar-widget collapsed hint-box">
+                <button class="collapsible" aria-expanded="false" aria-controls="hint-content">秘密のヒント</button>
+                <div id="hint-content" style="display: none;">
+                    <p>基地の中には、<strong>クリック</strong>したり、<strong>カーソルを合わせたり</strong>すると何か起こる場所があるみたい…？</p>
+                    <p>フッターの<strong>基地の名前</strong>を何度もクリックすると…？</p>
+                    <p>キーボードで「あのコマンド」を入力すると…？</p>
+                </div>
+            </div>
+            <div class="sidebar-widget theme-selector">
+                <h3><span class="sidebar-icon" aria-hidden="true">🎨</span>基地の色を変える</h3>
+                <button data-theme="default">いつもの</button>
+                <button data-theme="sakura">さくら色</button>
+                <button data-theme="sky">そら色</button>
+                <button data-theme="mint">ミント色</button>
+            </div>
+            <div class="sidebar-widget">
+                <h3><span class="sidebar-icon" aria-hidden="true">🌟</span>管理人のおはなし</h3>
+                <p style="font-size:0.9em; color:#777;">（こんな場末のページに来るなんて物好きだね！時間が許すままに楽しんでいって♪）</p>
+            </div>
+            <div class="sidebar-widget">
+                <h3><span class="sidebar-icon" aria-hidden="true">🔮</span>おみくじ</h3>
+                <button id="omikuji-btn" style="margin:8px 0;padding:7px 18px;font-family:'DotGothic16',sans-serif;font-size:1.1em;border-radius:8px;border:2px solid #ffb6c1;background:#fff8fa;color:#d23b93;cursor:var(--cursor-cute);">
+                    おみくじを引く！
+                </button>
+                <div id="omikuji-result" style="margin-top:8px;min-height:1.8em;font-size:1.13em;"></div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="container">
+                <header>
+                    <h1 id="site-title">かたかたの秘密基地</h1>
+                </header>
+                <nav>
+                    <a href="#welcome"><span class="nav-icon" aria-hidden="true">🏠</span>ホーム</a>
+                    <a href="#games"><span class="nav-icon" aria-hidden="true">🕹️</span>ゲーム</a>
+                    <a href="#community"><span class="nav-icon" aria-hidden="true">💬</span>掲示板</a>
+                    <a href="#about"><span class="nav-icon" aria-hidden="true">ℹ️</span>基地概要</a>
+                </nav>
+                <section id="welcome">
+                    <h2><span class="section-icon" aria-hidden="true">🎉</span><span id="welcome-message-text">ようこそ！かたかたの秘密基地へ！</span><span class="section-icon" aria-hidden="true">🎉</span></h2>
+                    <div id="welcome-message-container">
+                        <p>ここは、わたしが作ったゲームたちをこっそり置いておく秘密の場所だよ。</p>
+                        <p>ゆっくり見ていってね！ きっとお気に入りのゲームが見つかるはず♪</p>
+                        <p id="visit-count-message" style="font-size:0.9em; color:var(--theme-accent-cute); margin-top:10px;"></p>
+                    </div>
+                </section>
+                <section id="games">
+                    <h2>
+                        <span class="section-icon" id="game-section-left" aria-hidden="true">🕹️</span>
+                        ゲーム置き場
+                        <span class="section-icon" id="game-section-right" aria-hidden="true">🕹️</span>
+                    </h2>
+                    <div class="game-list" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+                        <div class="game-card">
+                            <img src="dummy_game1_pixel.png" alt="ピコピコ☆プラネット"> <!-- 実際の画像ファイルに置き換えてください -->
+                            <h3>ピコピコ☆プラネット</h3>
+                            <p>宇宙を冒険するレトロ風シューティング！アイテムを集めて最強を目指そう！</p>
+                            <a href="dummy_game_url_1.html" class="play-button">あそぶ！</a>
+                            <span class="game-tooltip">開発秘話：星の表現にこだわりました！</span>
+                        </div>
+                        <div class="game-card">
+                            <img src="dummy_game2_pastel.png" alt="ふわふわパティシエ物語"> <!-- 実際の画像ファイルに置き換えてください -->
+                            <h3>ふわふわパティシエ物語</h3>
+                            <p>かわいい動物たちと一緒にお菓子を作る、ほんわかパズルゲームだよ。</p>
+                            <a href="dummy_game_url_2.html" class="play-button">あそぶ！</a>
+                            <span class="game-tooltip">コツ：同じ色を3つ繋げると…？</span>
+                        </div>
+                        <div class="game-card">
+                            <img src="dummy_game3_retro.png" alt="ドットヒーローの伝説"> <!-- 実際の画像ファイルに置き換えてください -->
+                            <h3>ドットヒーローの伝説</h3>
+                            <p>昔ながらのコマンドバトルRPG！小さな勇者の大きな冒険が今、始まる！</p>
+                            <a href="dummy_game_url_3.html" class="play-button">あそぶ！</a>
+                            <span class="game-tooltip">隠しボスがいるらしい…？</span>
+                        </div>
+                    </div>
+                </section>
+                <section id="community">
+                    <h2>
+                        <span class="section-icon" id="bbs-section-left" aria-hidden="true">🗣️</span>
+                        ひみつの掲示板
+                    </h2>
+                    <p>キリ番を踏んだ人や合言葉を知ってる人は、ぜひ記念にひとこと残していってね！普通の雑談も大歓迎だよ。</p>
+                    <div id="bbs-form">
+                        <div>
+                            <label for="bbs-name">なまえ：</label>
+                            <input type="text" id="bbs-name" maxlength="20" placeholder="ひみつのなまえ (20文字まで)">
+                        </div>
+                        <div>
+                            <label for="bbs-message">メッセージ：</label>
+                            <textarea id="bbs-message" rows="4" placeholder="ここにメッセージをどうぞ (合言葉もココに！)" maxlength="200"></textarea>
+                        </div>
+                        <button id="bbs-submit">カキコする！</button>
+                    </div>
+                    <div id="bbs-posts">
+                        <p style="text-align:center; color: #777;">まだ投稿はないみたい…最初のカキコ、待ってるよ！</p>
+                    </div>
+                </section>
+                <section id="about">
+                    <h2>
+                        <span class="section-icon" aria-hidden="true">📖</span>
+                        基地について
+                        <span class="section-icon" aria-hidden="true">📖</span>
+                    </h2>
+                    <p>この「かたかたの秘密基地」は、管理人が趣味で作ったゲームを公開したり、みんなとこっそりお話ししたりするために作られた場所です。</p>
+                    <p>昔懐かしいインターネットの雰囲気を楽しんでもらえたら嬉しいな。</p>
+                    <p>バグを見つけたり、何か面白いアイデアがあったら、掲示板で教えてね！</p>
+                </section>
+                <footer>
+                    <p id="copyright-area">© 2025 <span id="copyright-name">かたかたの秘密基地</span> All Rights Reserved.</p>
+                    <p id="footer-secret-message"></p>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <div id="sound-control" title="BGM ON/OFF"><span id="sound-icon">🔊</span></div>
+    <button id="scroll-to-top-btn" title="一番上へ"><span id="top-icon">⬆️</span></button>
+
+    <script>
+        // JavaScript全体がここに挿入されます (Part 3/4 および Part 4/4)
+        // <script> の中身 - Part 1/2
+
+const siteConfig = {
+    kiriNumbers: [10, 25, 50, 77, 100, 150, 200, 250, 300, 333, 400, 500, 777, 1000, 1234, 2000],
+    secretWords: ["ヒミツ", "カクシコマンド", "ドット絵", "パステル", "キラキラ", "ピコピコ", "フシギ", "レトロ", "ワクワク", "ネコ", "ゲーム", "カタカタ"], // ユーザー提供のリストに更新
+    konamiCode: ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
+};
+
+// --- ローダー表示制御 ---
+function hideLoader() {
+    document.body.classList.add('loaded');
+    const pageWrapper = document.querySelector('.page-wrapper');
+    if (pageWrapper) {
+        pageWrapper.style.opacity = '1';
+    }
+    const loader = document.getElementById('loader-wrapper');
+    if (loader) {
+        const onFadeOutEnd = function(e) {
+            if (e.animationName === 'fadeOut') {
+                loader.style.display = 'none';
+                loader.removeEventListener('animationend', onFadeOutEnd);
+            }
+        };
+        loader.addEventListener('animationend', onFadeOutEnd);
+    }
+}
+
+// DOMContentLoadedではなく、画像なども含めたページ全体の読み込み完了後にローダーを非表示
+window.addEventListener('load', hideLoader);
+// 保険としてのタイムアウト (ユーザー提供のコードでは2500msだったが、10000msの方がより安全か)
+setTimeout(hideLoader, 10000); // 長めにしておく
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const root = document.documentElement;
+
+    // --- サイドバー：ヒント折りたたみ ---
+    const collBtn = document.querySelector('.collapsible');
+    const hintContent = document.getElementById('hint-content');
+    if (collBtn && hintContent) {
+        const isInitiallyExpanded = hintContent.style.display === 'block';
+        collBtn.setAttribute('aria-expanded', isInitiallyExpanded.toString());
+        collBtn.textContent = isInitiallyExpanded ? "秘密のヒント ▼" : "秘密のヒント";
+
+        collBtn.addEventListener('click', function() {
+            const expanded = collBtn.getAttribute('aria-expanded') === 'true';
+            collBtn.setAttribute('aria-expanded', (!expanded).toString());
+            hintContent.style.display = expanded ? 'none' : 'block';
+            collBtn.textContent = expanded ? "秘密のヒント" : "秘密のヒント ▼";
+        });
+    }
+
+    // --- テーマ設定 ---
+    const themeButtons = document.querySelectorAll('.theme-selector button');
+    const themes = {
+        default: {
+            '--theme-bg-primary': '#f0f8ff', '--theme-bg-secondary': '#fff0f5',
+            '--theme-border-retro': '#ffd700', '--theme-accent-cute': '#ffb6c1',
+            '--theme-header-bg': '#dda0dd', '--theme-nav-bg': '#ff7f50',
+            '--theme-nav-hover': '#ff4500', '--theme-section-bg': '#fffacd',
+            '--theme-section-border': '#f0e68c', '--theme-sidebar-bg': '#e6e6fa',
+            '--theme-sidebar-widget-bg': '#fff0f5',
+            '--dot-pattern-color': 'rgba(208, 232, 255, 0.4)'
+        },
+        sakura: {
+            '--theme-bg-primary': '#fff0f5', '--theme-bg-secondary': '#ffe4e1',
+            '--theme-border-retro': '#ffc0cb', '--theme-accent-cute': '#ff69b4',
+            '--theme-header-bg': '#ffb6c1', '--theme-nav-bg': '#ff7f50',
+            '--theme-nav-hover': '#f08080', '--theme-section-bg': '#fffafa',
+            '--theme-section-border': '#ffe4e1', '--theme-sidebar-bg': '#ffebf0',
+            '--theme-sidebar-widget-bg': '#fff5f7',
+            '--dot-pattern-color': 'rgba(255, 228, 225, 0.5)'
+        },
+        sky: {
+            '--theme-bg-primary': '#e0ffff', '--theme-bg-secondary': '#f0ffff',
+            '--theme-border-retro': '#87cefa', '--theme-accent-cute': '#add8e6',
+            '--theme-header-bg': '#afeeee', '--theme-nav-bg': '#6495ed',
+            '--theme-nav-hover': '#4169e1', '--theme-section-bg': '#f5fffa',
+            '--theme-section-border': '#e0ffff', '--theme-sidebar-bg': '#e6f7ff',
+            '--theme-sidebar-widget-bg': '#f0faff',
+            '--dot-pattern-color': 'rgba(175, 238, 238, 0.4)'
+        },
+        mint: {
+            '--theme-bg-primary': '#f0fff0', '--theme-bg-secondary': '#f5fffa',
+            '--theme-border-retro': '#98fb98', '--theme-accent-cute': '#8fbc8f',
+            '--theme-header-bg': '#90ee90', '--theme-nav-bg': '#3cb371',
+            '--theme-nav-hover': '#2e8b57', '--theme-section-bg': '#fafff0',
+            '--theme-section-border': '#f0fff0', '--theme-sidebar-bg': '#e6ffe6',
+            '--theme-sidebar-widget-bg': '#f0fff0',
+            '--dot-pattern-color': 'rgba(144, 238, 144, 0.3)'
+        }
+    };
+    function applyTheme(themeName) {
+        const selectedTheme = themes[themeName] || themes.default;
+        for (const [key, value] of Object.entries(selectedTheme)) {
+            root.style.setProperty(key, value);
+        }
+        const dotColorString = selectedTheme['--dot-pattern-color'] || 'rgba(208, 232, 255, 0.4)';
+        const dotColorMatch = dotColorString.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
+        if (dotColorMatch) {
+            const [, r, g, b, a] = dotColorMatch;
+            const hexR = parseInt(r).toString(16).padStart(2, '0');
+            const hexG = parseInt(g).toString(16).padStart(2, '0');
+            const hexB = parseInt(b).toString(16).padStart(2, '0');
+            const hexDotColor = `%23${hexR}${hexG}${hexB}`;
+            const dotOpacity = parseFloat(a);
+            root.style.setProperty('--dot-pattern-svg', `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='${hexDotColor}' fill-opacity='${dotOpacity}' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H0L6 0h-1z'/%3E%3C/g%3E%3C/svg%3E")`);
+        }
+        localStorage.setItem('katakataTheme', themeName);
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        const activeButton = document.querySelector(`.theme-selector button[data-theme="${themeName}"]`);
+        if (activeButton) activeButton.classList.add('active');
+    }
+    const savedTheme = localStorage.getItem('katakataTheme') || 'default';
+    applyTheme(savedTheme);
+    themeButtons.forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+
+    // --- かわいいマウスストーカー＆ON/OFF ---
+    const stalker = document.getElementById('mouse-stalker');
+    const stalkerToggle = document.getElementById('stalker-toggle');
+    let stalkerActive = localStorage.getItem('katakataStalker') !== 'off';
+    // ユーザー提供のコードでは stalker.innerHTML を書き換えていたが、CSSで背景画像指定しているので不要
+    // const cuteCursorURL = "url('data:image/svg+xml;utf8,<svg width=\"24\" height=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"12,2 15,10 24,10 17,15 19,24 12,19 5,24 7,15 0,10 9,10\" fill=\"%23ffb6c1\" stroke=\"%23d10074\" stroke-width=\"1.5\"/></svg>') 12 12, auto";
+    // document.documentElement.style.setProperty('--cursor-cute', cuteCursorURL); // CSSで設定済み
+
+    function setStalkerActive(on) {
+        stalkerActive = on;
+        localStorage.setItem('katakataStalker', on ? 'on' : 'off');
+        if (stalkerToggle) {
+            stalkerToggle.setAttribute('aria-pressed', on.toString());
+            stalkerToggle.textContent = `マウスストーカー ${on ? 'ON' : 'OFF'}`;
+        }
+        if (stalker) {
+            stalker.style.display = on ? 'block' : 'none';
+        }
+        document.body.style.cursor = on ? "none" : "var(--cursor-cute)"; // var(--cursor-cute)はCSSで定義
+         if (!on) {
+             document.querySelectorAll('a, button, input[type="submit"], input[type="button"], .collapsible').forEach(el => {
+                el.style.cursor = "var(--cursor-cute)";
+             });
+        } else {
+             document.querySelectorAll('a, button, input[type="submit"], input[type="button"], .collapsible').forEach(el => {
+                el.style.cursor = "none";
+             });
+        }
+    }
+    if (stalker && stalkerToggle) {
+        setStalkerActive(stalkerActive);
+        stalkerToggle.addEventListener('click', () => setStalkerActive(!stalkerActive));
+        document.addEventListener('mousemove', function(e) {
+            if (stalkerActive && stalker) {
+                stalker.style.transform = `translate(${e.clientX - stalker.offsetWidth / 2}px, ${e.clientY - stalker.offsetHeight / 2}px)`;
+            }
+        });
+    }
+
+    // --- ホバーメッセージ表示関数 ---
+    function showHoverBalloon(targetElement, message) {
+        if (!targetElement) return;
+        const existingBalloon = document.querySelector('.hover-balloon');
+        if (existingBalloon) existingBalloon.remove();
+        const balloon = document.createElement('div');
+        balloon.className = "hover-balloon";
+        balloon.textContent = message;
+        document.body.appendChild(balloon);
+        const rect = targetElement.getBoundingClientRect();
+        balloon.style.visibility = 'hidden'; //いったん隠してサイズ計算
+        const balloonRect = balloon.getBoundingClientRect();
+        balloon.style.visibility = 'visible';
+        let left = rect.left + (rect.width / 2) - (balloonRect.width / 2);
+        let top = rect.top - balloonRect.height - 8;
+        if (top < 0) top = rect.bottom + 8;
+        if (left < 0) left = 5;
+        if (left + balloonRect.width > window.innerWidth) left = window.innerWidth - balloonRect.width - 5;
+        balloon.style.left = left + "px";
+        balloon.style.top = top + "px";
+        const removeBalloon = () => {
+            if (balloon && balloon.parentElement) balloon.remove();
+            targetElement.removeEventListener('mouseleave', removeBalloon);
+        };
+        targetElement.addEventListener('mouseleave', removeBalloon, { once: true });
+    }
+    const gameIconLeft = document.getElementById("game-section-left");
+    if (gameIconLeft) gameIconLeft.addEventListener('mouseenter', () => showHoverBalloon(gameIconLeft, "わっ！見つかっちゃた！"));
+    const gameIconRight = document.getElementById("game-section-right");
+    if (gameIconRight) gameIconRight.addEventListener('mouseenter', () => showHoverBalloon(gameIconRight, "わっ！見つかっちゃた！"));
+    const bbsIconLeft = document.getElementById("bbs-section-left");
+    if (bbsIconLeft) bbsIconLeft.addEventListener('mouseenter', () => showHoverBalloon(bbsIconLeft, "みんな友達～"));
+    const navHomeIcon = document.querySelector('nav a[href="#welcome"] .nav-icon');
+    if (navHomeIcon) navHomeIcon.addEventListener('mouseenter', () => showHoverBalloon(navHomeIcon, "いらっしゃい！"));
+    const navBbsIcon = document.querySelector('nav a[href="#community"] .nav-icon');
+    if (navBbsIcon) navBbsIcon.addEventListener('mouseenter', () => showHoverBalloon(navBbsIcon, "みんな友達～"));
+
+    // --- サウンドコントロール ---
+    const soundControl = document.getElementById('sound-control');
+    const soundIconEl = document.getElementById('sound-icon');
+    const ambientSound = document.getElementById('ambient-sound');
+    let isSoundOn = false; // 初期はOFF
+    function updateSoundState() {
+        if (!soundControl || !soundIconEl || !ambientSound) return;
+        if (isSoundOn) {
+            soundControl.classList.remove('sound-off');
+            soundIconEl.textContent = '🔊'; // ユーザー提供のコードでは 🔈 (小さいスピーカー) だったが統一
+            soundControl.title = "BGM OFF";
+            // soundIconEl.style.textDecoration = "none"; // classListで制御
+            // soundIconEl.style.opacity = "1";
+        } else {
+            soundControl.classList.add('sound-off');
+            soundIconEl.textContent = '🔇'; // ユーザー提供のコードでは 🔊 に line-through だったが、ミュートアイコンに変更
+            soundControl.title = "BGM ON";
+            // soundIconEl.style.textDecoration = "line-through";
+            // soundIconEl.style.opacity = "0.5";
+        }
+    }
+    if (soundControl && ambientSound && soundIconEl) {
+        updateSoundState(); // 初期表示
+        soundControl.addEventListener('click', () => {
+            isSoundOn = !isSoundOn;
+            updateSoundState();
+        });
+    }
+
+    // --- 一番上に戻るボタン ---
+    const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+    if (scrollToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 150) {
+                scrollToTopBtn.style.display = "flex";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // --- ナビ：スムーズスクロール ---
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            try {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            } catch (error) {
+                console.error("Invalid selector for smooth scroll:", targetId, error);
+            }
+        });
+    });
+
+// JavaScript Part 1/2 終了 (DOMContentLoadedはまだ閉じない)
+// <script> の中身 - Part 2/2 (DOMContentLoaded内)
+
+    // --- 紙吹雪（confetti）エフェクト ---
+    function launchConfetti(duration = 900) {
+        let confettiArea = document.querySelector('.confetti-container');
+        if (!confettiArea) {
+            confettiArea = document.createElement('div');
+            confettiArea.className = "confetti-container";
+            Object.assign(confettiArea.style, {
+                position: 'fixed', top: '0', left: '0', width: '100vw', height: '100vh',
+                pointerEvents: 'none', zIndex: '99999'
+            });
+            document.body.appendChild(confettiArea);
+        }
+        const colors = ['#ffd700','#ffb6c1','#87ceeb','#32cd32','#ff69b4','#dda0dd','#fffacd'];
+        for (let i = 0; i < 28; i++) {
+            let confettiPiece = document.createElement('div');
+            confettiPiece.className = 'confetti-piece'; // CSSでスタイル定義済み
+            confettiPiece.style.background = `linear-gradient(135deg, ${colors[i % colors.length]} 50%, ${colors[(i+3) % colors.length]} 50%)`; // 色の組み合わせを少し変更
+            confettiPiece.style.left = Math.random() * 100 + 'vw';
+            confettiPiece.style.top = '-30px';
+            confettiPiece.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confettiPiece.style.opacity = (0.65 + Math.random() * 0.35).toString();
+            confettiArea.appendChild(confettiPiece);
+            const fallDuration = duration + Math.random() * 500;
+            const toX = (Math.random() * 100 - 50); // 横の揺れ幅を少し大きく
+            confettiPiece.animate([
+                { transform: confettiPiece.style.transform, top: '-30px', opacity: confettiPiece.style.opacity },
+                { transform: `rotate(${Math.random() * 720 + 360}deg) translateX(${toX}px)`, top: '110vh', opacity: 0.1 }
+            ], {
+                duration: fallDuration,
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)', // イージング変更
+                fill: 'forwards'
+            });
+            setTimeout(() => {
+                confettiPiece.remove();
+            }, fallDuration + 100);
+        }
+    }
+
+    // --- 挨拶と訪問回数・バッジ ---
+    const welcomeMessageElement = document.getElementById('welcome-message-text');
+    const visitCountMessageElement = document.getElementById('visit-count-message');
+    let visitCount = parseInt(localStorage.getItem('katakataVisitCount') || '0');
+    visitCount++;
+    localStorage.setItem('katakataVisitCount', visitCount.toString());
+    if (welcomeMessageElement) {
+        const hour = new Date().getHours();
+        let greeting = "ようこそ！";
+        if (hour >= 5 && hour < 12) greeting = 'おはよう！';
+        else if (hour >= 12 && hour < 18) greeting = 'こんにちは！';
+        else greeting = 'こんばんは！';
+        welcomeMessageElement.textContent = `${greeting}かたかたの秘密基地へ！`;
+    }
+    if (visitCountMessageElement) {
+        if (visitCount === 1) {
+            visitCountMessageElement.textContent = "初めての訪問ありがとう！ゆっくりしていってね！";
+        } else if (visitCount <= 5) {
+            visitCountMessageElement.textContent = `${visitCount}回目の訪問だね！嬉しいな♪`;
+        } else if (visitCount <= 10) {
+            visitCountMessageElement.textContent = `わぁ、${visitCount}回も！もう常連さんだね！`;
+        } else {
+            // ユーザー提供のコードのメッセージを採用
+            visitCountMessageElement.innerHTML = `祝☆<strong>${visitCount}回</strong>訪問！いつもありがとう！管理人より愛を込めて💖`;
+        }
+        const visitBadges = [ // バッジ機能は私の提案だったので、ユーザーのコードに合わせて調整
+            { count: 10, label: "10回訪問記念🥉" }, { count: 30, label: "30回訪問記念🥈" },
+            { count: 50, label: "50回訪問記念🥇" }, { count: 100, label: "100回訪問記念🏅 LEGEND!" },
+        ];
+        let badgeMessage = '';
+        visitBadges.forEach(badge => {
+            if (visitCount === badge.count) {
+                launchConfetti(1500);
+                badgeMessage = `おめでとう！${badge.label}を獲得したよ！`;
+            }
+        });
+        if (badgeMessage) {
+            const badgeSpan = document.createElement('span');
+            badgeSpan.style.color = "gold"; badgeSpan.style.display = "block"; badgeSpan.style.marginTop = "5px";
+            badgeSpan.innerHTML = badgeMessage;
+            visitCountMessageElement.appendChild(document.createElement('br'));
+            visitCountMessageElement.appendChild(badgeSpan);
+        }
+    }
+
+    // --- 来場者カウンター ---
+    const counterElement = document.getElementById('counter-sidebar');
+    const kiriAnnounceElement = document.getElementById('kiri-announce-sidebar');
+    let visitorCount = 0;
+    const storedVisitorCount = localStorage.getItem('katakataVisitorCount_v2');
+    if (!sessionStorage.getItem('katakataPageLoadedThisSession')) {
+        visitorCount = storedVisitorCount === null ? 1 : parseInt(storedVisitorCount) + 1;
+        localStorage.setItem('katakataVisitorCount_v2', visitorCount.toString());
+        sessionStorage.setItem('katakataPageLoadedThisSession', 'true');
+    } else {
+        visitorCount = parseInt(storedVisitorCount || '0');
+    }
+    if (counterElement) counterElement.textContent = visitorCount.toString();
+    window.currentVisitorCount = visitorCount;
+    if (kiriAnnounceElement) {
+        if (siteConfig.kiriNumbers.includes(visitorCount)) {
+            kiriAnnounceElement.innerHTML = `🎉 わーい！アナタが<strong>${visitorCount}人目</strong>の来場者さん！<br>おめでとう！ 掲示板にカキコしてね！ 🎉`;
+        } else if (visitorCount > 0 && visitorCount % 100 === 0) {
+            kiriAnnounceElement.innerHTML = `🎊 すごい！<strong>${visitorCount}人目</strong>の来場者さん！<br>記念に何かどうぞ！ 🎊`;
+        } else {
+            kiriAnnounceElement.innerHTML = '';
+        }
+    }
+
+    // --- 今日の合言葉 ---
+    const secretWordElement = document.getElementById('secret-word');
+    const currentMonth = new Date().getMonth(); // 0-11
+    const todaySecretWord = siteConfig.secretWords[currentMonth % siteConfig.secretWords.length];
+    if (secretWordElement) secretWordElement.textContent = todaySecretWord;
+    window.todaySecretWord = todaySecretWord;
+
+    // --- 掲示板 ---
+    const bbsNameInput = document.getElementById('bbs-name');
+    const bbsMessageInput = document.getElementById('bbs-message');
+    const bbsSubmitButton = document.getElementById('bbs-submit');
+    const bbsPostsContainer = document.getElementById('bbs-posts');
+    let posts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');
+    function escapeHtml(unsafe) { // 修正版を適用
+        if (typeof unsafe !== 'string') return '';
+        return unsafe.replace(/&/g, "&")
+                     .replace(/</g, "<")
+                     .replace(/>/g, ">")
+                     .replace(/"/g, "&quot;")
+                     .replace(/'/g, "'");
+    }
+    function displayPosts() {
+        if (!bbsPostsContainer) return;
+        bbsPostsContainer.innerHTML = '';
+        if (posts.length === 0) {
+            bbsPostsContainer.innerHTML = '<p style="text-align:center; color: #777;">まだ投稿はないみたい…最初のカキコ、待ってるよ！</p>';
+            return;
+        }
+        [...posts].reverse().forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            if (post.isKiri) postElement.classList.add('kiri-post');
+            if (post.usedSecretWord) postElement.classList.add('secret-word-post');
+            const postDate = new Date(post.timestamp);
+            const formattedDate = !isNaN(postDate.valueOf()) ? 
+                postDate.toLocaleString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '日付不明';
+            postElement.innerHTML = `
+                <div><span class="name">${escapeHtml(post.name || 'ななしさん')}</span><span class="date">${formattedDate}</span></div>
+                <p class="message">${escapeHtml(post.message)}</p>`;
+            bbsPostsContainer.appendChild(postElement);
+        });
+    }
+    if (bbsSubmitButton && bbsNameInput && bbsMessageInput) {
+        bbsSubmitButton.addEventListener('click', function() {
+            const name = bbsNameInput.value.trim();
+            const message = bbsMessageInput.value.trim();
+            if (!message) { alert('メッセージを入力してくださいね！'); return; }
+            if (message.length > 200) { alert('メッセージは200文字以内でお願いします！'); return; }
+            if (name.length > 20) { alert('おなまえは20文字以内でお願いします！'); return; }
+            const newPost = {
+                name: name || 'ななしさん', message: message, timestamp: new Date().toISOString(),
+                isKiri: siteConfig.kiriNumbers.includes(window.currentVisitorCount) && !posts.some(p => p.visitorNum === window.currentVisitorCount && p.isKiri),
+                visitorNum: window.currentVisitorCount,
+                usedSecretWord: message.includes(window.todaySecretWord)
+            };
+            posts.push(newPost);
+            localStorage.setItem('katakataBBS_v3', JSON.stringify(posts));
+            bbsNameInput.value = ''; bbsMessageInput.value = '';
+            displayPosts();
+            launchConfetti(800);
+        });
+    }
+    displayPosts();
+
+    // --- コナミコマンド ---
+    let konamiProgress = 0;
+    document.addEventListener('keydown', function(e) {
+        if (e.key.toLowerCase() === siteConfig.konamiCode[konamiProgress].toLowerCase()) {
+            konamiProgress++;
+            if (konamiProgress === siteConfig.konamiCode.length) {
+                konamiSuccess();
+                konamiProgress = 0;
+            }
+        } else {
+            konamiProgress = 0;
+        }
+    });
+    function konamiSuccess() {
+        const successMsg = document.createElement('div');
+        successMsg.textContent = 'コマンド成功！さてはおめぇ古のオタクだな！'; // ユーザー提供のメッセージ
+        Object.assign(successMsg.style, {
+            position:'fixed',top:'50%',left:'50%',transform:'translate(-50%,-50%)',
+            background:'rgba(0,0,0,0.8)',color:'lime',padding:'20px',borderRadius:'10px',
+            fontFamily:"'Press Start 2P',cursive",zIndex:'10001',border:'2px solid lime', // zIndexを調整
+            boxShadow:'0 0 20px lime'
+        });
+        document.body.appendChild(successMsg);
+        launchConfetti(2000);
+        let blinkCount = 0;
+        const originalBgColor = document.body.style.backgroundColor; // 元の背景色を保存
+        const blinkInterval = setInterval(() => {
+            document.body.style.backgroundColor = blinkCount % 2 === 0 ? 'var(--theme-accent-cute)' : 'var(--theme-bg-primary)';
+            blinkCount++;
+            if (blinkCount > 6) {
+                clearInterval(blinkInterval);
+                document.body.style.backgroundColor = originalBgColor; // 元の背景色に戻す
+                setTimeout(() => { successMsg.remove(); }, 2000);
+            }
+        }, 300);
+    }
+
+    // --- 本日のおみくじ (サイドバー) ---
+    const omikujiBtn = document.getElementById('omikuji-btn'); // HTMLにボタンがあるので、動的生成は不要
+    const omikujiResult = document.getElementById('omikuji-result');
+    if (omikujiBtn && omikujiResult) {
+        const fortunes = [ // タイポ修正済み
+            "大吉🎯：最高の一日になる予感！", "中吉🌟：今日は良いことが起きそう！",
+            "小吉😊：小さな幸せが見つかるかも？", "末吉🍀：焦らずマイペースでいこう！",
+            "吉👍：なかなか良い調子！", "大大吉🎊：伝説が始まる！？何かすごいことあるかも！"
+        ];
+        omikujiBtn.addEventListener('click', () => {
+            const idx = Math.floor(Math.random() * fortunes.length);
+            omikujiResult.textContent = fortunes[idx];
+            omikujiResult.style.color = fortunes[idx].includes("大吉") ? "red" : 
+                                       fortunes[idx].includes("中吉") ? "orange" : 
+                                       fortunes[idx].includes("凶") ? "blue" : "var(--theme-text-dark)";
+            launchConfetti(1000);
+            omikujiBtn.disabled = true;
+            setTimeout(() => { omikujiBtn.disabled = false; }, 1200);
+        });
+    }
+
+    // --- タイトルクリックの遊び心 ---
+    const siteTitle = document.getElementById('site-title');
+    if(siteTitle){
+        let titleClicks=0;
+        siteTitle.addEventListener('click',function(){
+            titleClicks++;
+            this.style.transition='transform 0.1s, color 0.1s, text-shadow 0.1s';
+            const colors=['#ffeb3b','#ff85c0','#85ffc0','#85c0ff','#ffa500'];
+            this.style.color = colors[titleClicks%colors.length];
+            this.style.transform=`scale(${1.03+(titleClicks%3)*0.01}) rotate(${(titleClicks%7)-3}deg)`;
+            this.style.textShadow=`${(titleClicks%3)+2}px ${(titleClicks%3)+2}px 0px rgba(0,0,0,0.25), 0 0 ${(titleClicks%5)+10}px ${colors[(titleClicks+1)%colors.length]}`;
+            if(titleClicks > 12) {
+                this.innerHTML="かたかたの<br>🎉ULTIMATE秘密基地🎉";
+            } else if(titleClicks > 8) {
+                this.innerHTML="かたかたの<br>✨スーパーDX秘密基地✨";
+            } else {
+                this.innerHTML="かたかたの秘密基地"; // 元のテキストに戻す
+            }
+        });
+    }
+
+    // --- フッターの隠し要素 ---
+    const copyrightName = document.getElementById('copyright-name');
+    const footerSecretMessage = document.getElementById('footer-secret-message');
+    if(copyrightName && footerSecretMessage){
+        let footerClicks=0;
+        const secretMessages=[
+            "ひみつみーつけた！", "よく見つけたね！", "ここは秘密の場所だよ！",
+            "管理人より：いつもありがとう！", "キラキラ～☆", "もっとクリックしてみて！",
+            "なにかいいことあるかも？", "基地の奥深くへようこそ…", "宝物は見つかったかな？",
+            '例のコマンドとは↑↑↓↓←→←→BA'
+        ];
+        copyrightName.addEventListener('click',function(){
+            footerClicks++;
+            const randomMessage = secretMessages[footerClicks%secretMessages.length];
+            footerSecretMessage.textContent = `(${footerClicks}回目) ${randomMessage}`;
+            this.style.transition='color 0.1s, transform 0.1s';
+            const clickColors=['#ff1493','#32cd32','#1e90ff','#ffa500','#9400d3'];
+            this.style.color = clickColors[footerClicks%clickColors.length];
+            this.style.transform=`scale(${1+(footerClicks%5)*0.05})`;
+            setTimeout(()=>{this.style.transform='scale(1)';},150);
+            if(footerClicks===10){
+                document.body.style.transition='filter 0.5s';
+                document.body.style.filter='hue-rotate(90deg) saturate(1.5)';
+                footerSecretMessage.textContent="🎉世界がカラフルになった！🎉";
+                setTimeout(()=>{document.body.style.filter='';},1500);
+            }
+            if(footerClicks===15){
+                alert("すごい！あなたは真の秘密基地探検家だ！たくさん遊んでくれてありがとう！💖");
+                footerClicks=0;
+            }
+        });
+    }
+
+}); // DOMContentLoaded イベントリスナー終了
+    </script>
+</body>
+</html>
