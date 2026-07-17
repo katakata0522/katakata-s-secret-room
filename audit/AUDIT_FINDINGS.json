@@ -1,0 +1,394 @@
+[
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 460,
+    "message": "Missing local audio src: dummy-sound.mp3"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 528,
+    "message": "Missing local img src: dummy_game1_pixel.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 531,
+    "message": "Missing local a href: dummy_game_url_1.html"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 535,
+    "message": "Missing local img src: dummy_game2_pastel.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 538,
+    "message": "Missing local a href: dummy_game_url_2.html"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 542,
+    "message": "Missing local img src: dummy_game3_retro.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "index.html",
+    "line": 545,
+    "message": "Missing local a href: dummy_game_url_3.html"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 460,
+    "message": "Missing local audio src: dummy-sound.mp3"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 528,
+    "message": "Missing local img src: dummy_game1_pixel.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 531,
+    "message": "Missing local a href: dummy_game_url_1.html"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 535,
+    "message": "Missing local img src: dummy_game2_pastel.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 538,
+    "message": "Missing local a href: dummy_game_url_2.html"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 542,
+    "message": "Missing local img src: dummy_game3_retro.png"
+  },
+  {
+    "severity": "HIGH",
+    "category": "broken-reference",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 545,
+    "message": "Missing local a href: dummy_game_url_3.html"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 911,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 927,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 949,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 951,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 953,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 983,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 985,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 996,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 1094,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 1096,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "index.html",
+    "line": 1098,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 911,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 927,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 949,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 951,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 953,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 980,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 982,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 993,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 1091,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 1093,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "html-sink",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 1095,
+    "message": "innerHTML assignment"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 702,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 707,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 714,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 721,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 891,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 893,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 937,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 940,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 969,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "index.html",
+    "line": 1016,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 702,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 707,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 714,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 721,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 891,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 893,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 937,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 940,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 969,
+    "message": "localStorage is user-controlled"
+  },
+  {
+    "severity": "LOW",
+    "category": "storage",
+    "path": "かたかた秘密基地 概形 .html",
+    "line": 1013,
+    "message": "localStorage is user-controlled"
+  }
+]
