@@ -967,14 +967,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const bbsSubmitButton = document.getElementById('bbs-submit');
     const bbsPostsContainer = document.getElementById('bbs-posts');
     let posts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');
-    function escapeHtml(unsafe) { // 修正版を適用
-        if (typeof unsafe !== 'string') return '';
-        return unsafe.replace(/&/g, "&")
-                     .replace(/</g, "<")
-                     .replace(/>/g, ">")
-                     .replace(/"/g, "&quot;")
-                     .replace(/'/g, "'");
-    }
+    function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    const htmlEntities = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    };
+    return unsafe.replace(/[&<>"']/g, char => htmlEntities[char]);
+}
     function displayPosts() {
         if (!bbsPostsContainer) return;
         bbsPostsContainer.innerHTML = '';
