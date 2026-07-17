@@ -966,16 +966,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const bbsMessageInput = document.getElementById('bbs-message');
     const bbsSubmitButton = document.getElementById('bbs-submit');
     const bbsPostsContainer = document.getElementById('bbs-posts');
-    let posts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');
-    function escapeHtml(unsafe) { // 修正版を適用
-        if (typeof unsafe !== 'string') return '';
-        return unsafe.replace(/&/g, "&")
-                     .replace(/</g, "<")
-                     .replace(/>/g, ">")
-                     .replace(/"/g, "&quot;")
-                     .replace(/'/g, "'");
+    let posts = [];
+    try {
+        const storedPosts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');
+        if (Array.isArray(storedPosts)) {
+            posts = storedPosts.filter(post => post && typeof post === 'object');
+        }
+    } catch (error) {
+        console.warn('掲示板の保存データを読み込めなかったため、空の状態で開始します。', error);
     }
-    function displayPosts() {
+    function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    const htmlEntities = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    };
+    return unsafe.replace(/[&<>"']/g, char => htmlEntities[char]);
+}
+function displayPosts() {
         if (!bbsPostsContainer) return;
         bbsPostsContainer.innerHTML = '';
         if (posts.length === 0) {
