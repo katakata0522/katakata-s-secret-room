@@ -1,0 +1,94 @@
+name: Apply audit follow-up fixes
+
+on:
+  push:
+    branches:
+      - fix/audit-followup-secret-room
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/audit-followup-secret-room
+          fetch-depth: 0
+
+      - name: Patch duplicate page and stored-post loading
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          paths = [Path('index.html'), Path('かたかた秘密基地 概形 .html')]
+          secure_escape = '''    function escapeHtml(unsafe) {
+              if (typeof unsafe !== 'string') return '';
+              const htmlEntities = {
+                  '&': '&amp;',
+                  '<': '&lt;',
+                  '>': '&gt;',
+                  '"': '&quot;',
+                  "'": '&#39;'
+              };
+              return unsafe.replace(/[&<>"']/g, char => htmlEntities[char]);
+          }
+          function displayPosts'''
+
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+
+              old_loader = "    let posts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');"
+              new_loader = '''    let posts = [];
+              try {
+                  const storedPosts = JSON.parse(localStorage.getItem('katakataBBS_v3') || '[]');
+                  if (Array.isArray(storedPosts)) {
+                      posts = storedPosts.filter(post => post && typeof post === 'object');
+                  }
+              } catch (error) {
+                  console.warn('掲示板の保存データを読み込めなかったため、空の状態で開始します。', error);
+              }'''
+              if text.count(old_loader) != 1:
+                  raise SystemExit(f'{path}: expected one stored-post loader, found {text.count(old_loader)}')
+              text = text.replace(old_loader, new_loader, 1)
+
+              pattern = re.compile(r"    function escapeHtml\(unsafe\)\s*\{.*?\n\s*\}\n\s*function displayPosts", re.S)
+              text, count = pattern.subn(secure_escape, text, count=1)
+              if count != 1:
+                  raise SystemExit(f'{path}: escapeHtml block not found exactly once')
+
+              if ".replace(/</g, \"<\")" in text or ".replace(/>/g, \">\")" in text:
+                  raise SystemExit(f'{path}: vulnerable no-op escaping remains')
+              path.write_text(text, encoding='utf-8')
+          PY
+
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          for path in [Path('index.html'), Path('かたかた秘密基地 概形 .html')]:
+              html = path.read_text(encoding='utf-8')
+              scripts = []
+              for match in re.finditer(r'<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)</script>', html, re.I):
+                  scripts.append(match.group(1))
+              if not scripts:
+                  raise SystemExit(f'{path}: no inline script found')
+              with tempfile.NamedTemporaryFile('w', suffix='.js', encoding='utf-8', delete=False) as f:
+                  f.write('\n'.join(scripts))
+                  temp = f.name
+              subprocess.run(['node', '--check', temp], check=True)
+          PY
+
+      - name: Commit fixes and remove temporary workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/apply-audit-followup.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 'かたかた秘密基地 概形 .html' .github/workflows/apply-audit-followup.yml
+          git commit -m "fix: 掲示板保存データと複製ページを安全化"
+          git push origin HEAD:fix/audit-followup-secret-room
