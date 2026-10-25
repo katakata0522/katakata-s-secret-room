@@ -885,10 +885,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 保存値が壊れていても NaN を表示しないよう、0以上の整数だけを採用する（保存キーは従来どおり）。
+    function readStoredCount(rawValue) {
+        const parsed = parseInt(rawValue, 10);
+        return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+    }
     // --- 挨拶と訪問回数・バッジ ---
     const welcomeMessageElement = document.getElementById('welcome-message-text');
     const visitCountMessageElement = document.getElementById('visit-count-message');
-    let visitCount = parseInt(localStorage.getItem('katakataVisitCount') || '0');
+    let visitCount = readStoredCount(localStorage.getItem('katakataVisitCount'));
     visitCount++;
     localStorage.setItem('katakataVisitCount', visitCount.toString());
     if (welcomeMessageElement) {
@@ -936,11 +941,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let visitorCount = 0;
     const storedVisitorCount = localStorage.getItem('katakataVisitorCount_v2');
     if (!sessionStorage.getItem('katakataPageLoadedThisSession')) {
-        visitorCount = storedVisitorCount === null ? 1 : parseInt(storedVisitorCount) + 1;
+        visitorCount = readStoredCount(storedVisitorCount) + 1;
         localStorage.setItem('katakataVisitorCount_v2', visitorCount.toString());
         sessionStorage.setItem('katakataPageLoadedThisSession', 'true');
     } else {
-        visitorCount = parseInt(storedVisitorCount || '0');
+        visitorCount = readStoredCount(storedVisitorCount);
     }
     if (counterElement) counterElement.textContent = visitorCount.toString();
     window.currentVisitorCount = visitorCount;
